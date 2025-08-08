@@ -1,5 +1,5 @@
 // ====== 설정 ======
-const ENDPOINT = "https://script.google.com/macros/s/AKfycbzJYR2iJNTBndvkJmiRqooR-Q0rh7baUzrqECc0W9kPbTTCy0zcMBSyQyk9eTpXLwX1Vg/exec"; // ★ Apps Script 배포 URL로 교체
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbynNQGiG230WkWwwf_kfBH2dZGwBqhJW9sAkReXCHVsw0Noao3FKwCLZInsnre0hEPDJQ/exec"; // ★ Apps Script 배포 URL로 교체
 const KEY_DRAFT = "consult_draft_v2";
 
 // ====== 유틸 ======
@@ -128,4 +128,5 @@ window.addEventListener("DOMContentLoaded", ()=>{
     }
   });
 });
+
 
