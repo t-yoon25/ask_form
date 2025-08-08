@@ -46,14 +46,26 @@ function previewText(o){
     "", "상세 내용", "----------", o.message
   ].join("\n");
 }
+
 async function postToSheet(payload){
-  const res=await fetch(ENDPOINT,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({...payload, origin:location.origin, userAgent:navigator.userAgent})
+  const res = await fetch(ENDPOINT, {
+    method: "POST",
+    headers: {
+      // ★ CORS/프리플라이트 회피용: 폼형식으로 보냄
+      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+    },
+    body: new URLSearchParams({
+      ...payload,
+      origin: location.origin,
+      userAgent: navigator.userAgent
+    })
   });
-  return res.json();
+  const text = await res.text();
+  console.log("RAW response:", text, "status:", res.status);
+  try { return JSON.parse(text); } 
+  catch { return { ok:false, error:"INVALID_JSON", raw:text, status:res.status }; }
 }
+
 function showDone(token){
   const sec=$("#afterSubmit");
   const base=location.origin+location.pathname.replace(/index\.html?$/,'');
@@ -123,6 +135,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
   // 미리보기 다이얼로그에서 “이 내용으로 제출”
   $("#confirmSubmit").addEventListener("click", (e)=>{ e.preventDefault(); submitForReal(); });
 });
+
 
 
 
