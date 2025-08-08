@@ -1,5 +1,5 @@
 // ====== 설정 ======
-const ENDPOINT = "https://script.google.com/macros/s/AKfycbw-m33u72zZi-Q226hRRDU4A7knBsVQJpWzG2CPaY3KsSwSkZXhUJGgTPA7FyDVhBw6/exec"; // 반드시 /exec 로 끝나는 URL
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbxljr2E8CXqiRV2E1YA_GOZ1Du171UwcSOTOAefeD546zrme7dCVqC4GrHqyHQpjsyUHw/exec"; // 반드시 /exec 로 끝나는 URL
 
 // ====== 유틸 ======
 const $ = (s, c=document)=>c.querySelector(s);
@@ -135,6 +135,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
   // 미리보기 다이얼로그에서 “이 내용으로 제출”
   $("#confirmSubmit").addEventListener("click", (e)=>{ e.preventDefault(); submitForReal(); });
 });
+
 
 
 
