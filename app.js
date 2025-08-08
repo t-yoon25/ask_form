@@ -1,5 +1,5 @@
 // ====== 설정 ======
-const ENDPOINT = "YOUR_APPS_SCRIPT_WEBAPP_URL"; // 반드시 /exec 로 끝나는 URL
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbz63amZ1zT2uSxD8PESsO8PEU4qVtF02oQlFpCVfU7HljgrqWV1yG53XjD5M18b7Lmtsw/exec"; // 반드시 /exec 로 끝나는 URL
 
 // ====== 유틸 ======
 const $ = (s, c=document)=>c.querySelector(s);
@@ -123,3 +123,4 @@ window.addEventListener("DOMContentLoaded", ()=>{
   // 미리보기 다이얼로그에서 “이 내용으로 제출”
   $("#confirmSubmit").addEventListener("click", (e)=>{ e.preventDefault(); submitForReal(); });
 });
+
