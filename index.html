@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>학부모 상담 접수</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <h1>학부모 상담 접수</h1>
+  <p class="subtitle">담임: 5학년 ○반 · 응답은 보통 24시간 이내</p>
+</header>
+
+<main class="container">
+  <section class="notice">
+    <ul>
+      <li>실시간 채팅이 아닌 <b>접수형 상담</b>입니다. 제출 후 교사가 확인하여 회신합니다.</li>
+      <li>긴급 사안은 학교 대표번호로 연락해 주세요.</li>
+    </ul>
+  </section>
+
+  <form id="consultForm" novalidate>
+    <fieldset>
+      <legend>학생/보호자 정보</legend>
+      <div class="grid">
+        <label><span>학생 이름 <b class="req">*</b></span>
+          <input type="text" name="studentName" required />
+        </label>
+        <label><span>학번/번호</span>
+          <input type="text" name="studentId" />
+        </label>
+        <label><span>보호자 성함 <b class="req">*</b></span>
+          <input type="text" name="guardianName" required />
+        </label>
+        <label><span>연락처(휴대폰) <b class="req">*</b></span>
+          <input type="tel" name="phone" inputmode="tel" placeholder="010-0000-0000" required />
+        </label>
+        <label><span>이메일(선택)</span>
+          <input type="email" name="email" placeholder="name@example.com" />
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>상담 내용</legend>
+      <label><span>상담 주제 <b class="req">*</b></span>
+        <select name="topic" required>
+          <option value="" selected disabled>선택하세요</option>
+          <option>학습/숙제</option><option>생활/또래관계</option>
+          <option>행동/정서</option><option>진로/흥미</option><option>가정연락/기타</option>
+        </select>
+      </label>
+
+      <div>
+        <span>긴급도</span>
+        <div class="radio-row">
+          <label><input type="radio" name="priority" value="보통" checked> 보통</label>
+          <label><input type="radio" name="priority" value="빠른 회신"> 빠른 회신</label>
+          <label><input type="radio" name="priority" value="매우 급함"> 매우 급함</label>
+        </div>
+      </div>
+
+      <label><span>희망 연락 방법/시간</span>
+        <input type="text" name="preferredTime" placeholder="예) 평일 16~18시 전화 통화 희망" />
+      </label>
+
+      <label><span>상세 내용 <b class="req">*</b></span>
+        <textarea name="message" rows="8" required
+          placeholder="사실(관찰)/느낀점/원하시는 점을 구분해 주시면 도움이 됩니다."></textarea>
+      </label>
+
+      <label class="consent">
+        <input type="checkbox" name="consent" required />
+        <span>개인정보 수집·이용에 동의합니다. (상담 목적 외 사용하지 않습니다) <b class="req">*</b></span>
+      </label>
+    </fieldset>
+
+    <div class="actions">
+      <button type="button" id="previewBtn">미리보기</button>
+      <button type="reset" id="resetDraftBtn">초안 비우기</button>
+      <button type="submit" class="primary">제출</button>
+    </div>
+    <p id="formError" class="error" aria-live="polite"></p>
+  </form>
+
+  <!-- 제출 전 미리보기 -->
+  <dialog id="previewDialog" class="modal">
+    <form method="dialog">
+      <h3>제출 전 미리보기</h3>
+      <pre id="previewContent" class="preview"></pre>
+      <menu>
+        <button value="cancel">수정하기</button>
+        <button id="confirmSubmit" value="default" class="primary">이 내용으로 제출</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <!-- 제출 완료/상태조회 링크 안내 -->
+  <section id="afterSubmit" class="done hidden">
+    <h2>접수가 완료되었습니다</h2>
+    <p>아래 <b>상태조회 링크</b>로 진행 상황을 확인하실 수 있어요. 링크를 복사하거나 카카오톡/문자로 공유해 보관하세요.</p>
+    <div class="card">
+      <code id="statusLink"></code>
+      <div class="panel-actions">
+        <button id="copyLinkBtn">링크 복사</button>
+        <button id="shareBtn">공유하기</button>
+      </div>
+    </div>
+    <p class="help">※ 이 링크를 가진 본인만 조회할 수 있습니다.</p>
+  </section>
+
+  <footer class="legal">
+    <details><summary>개인정보 처리 안내</summary>
+      <p>수집 항목: 학생/보호자 성명, 연락처, 상담 내용 등. 보관: 상담 목적. 제출 데이터는 구글 스프레드시트에 저장됩니다.</p>
+    </details>
+  </footer>
+</main>
+
+<script src="app.js" defer></script>
+</body>
+</html>
