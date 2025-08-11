@@ -1,5 +1,5 @@
 // ⚠️ 중요: 아래 URL을 실제 Google Apps Script URL로 변경하세요!
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx3HyZSbscnaN7suPYZaplt_N5AZyiof7JTZJkYvzT-Y7OUrGT6teixE7sHkOhDJchLhA/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwYzQbebs--jBUzrDDfB35Q7XbBc8QSXJMZ1gi3HqR5RXQZnELF6QaMYF9sgRVVopUJfA/exec';
 
 // 페이지가 로드되면 실행
 document.addEventListener('DOMContentLoaded', function() {
@@ -148,7 +148,6 @@ function handleSuccess(formId) {
     const form = document.getElementById('consultForm');
     const loadingDiv = document.getElementById('loadingDiv');
     const successMessage = document.getElementById('successMessage');
-    const confirmNumber = document.getElementById('confirmNumber');
     
     // 로딩 숨기기
     loadingDiv.classList.remove('active');
@@ -156,13 +155,27 @@ function handleSuccess(formId) {
     // 폼 숨기기
     form.style.display = 'none';
     
-    // 성공 메시지 표시
-    confirmNumber.textContent = `접수번호: ${formId}`;
+    // 성공 메시지에 접수번호 표시
+    successMessage.innerHTML = `
+        ✅ 상담 신청이 완료되었습니다!<br><br>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 5px; margin: 10px 0;">
+            <strong style="color: #856404; font-size: 18px;">접수번호: ${formId}</strong><br>
+            <span style="color: #856404; font-size: 14px;">이 번호를 꼭 메모해주세요!</span>
+        </div>
+        2일 이내에 확인 후 답변 드리겠습니다.
+    `;
     successMessage.style.display = 'block';
     
     // 알림 메시지
     setTimeout(() => {
-        alert(`상담이 접수되었습니다.\n\n접수번호: ${formId}\n\n접수번호를 메모해두시면 처리 상태를 확인하실 수 있습니다.`);
+        if(confirm(`상담이 접수되었습니다!\n\n📌 접수번호: ${formId}\n\n접수번호를 복사하시겠습니까?`)) {
+            // 접수번호를 클립보드에 복사
+            navigator.clipboard.writeText(formId).then(() => {
+                alert('접수번호가 복사되었습니다.\n메모장 등에 붙여넣기 해두세요.');
+            }).catch(() => {
+                alert(`접수번호: ${formId}\n\n이 번호를 직접 메모해주세요.`);
+            });
+        }
     }, 500);
 }
 
@@ -177,5 +190,4 @@ function handleError(error) {
     // 버튼 다시 활성화
     submitBtn.disabled = false;
     loadingDiv.classList.remove('active');
-
 }
