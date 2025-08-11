@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상담 상태 확인</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .check-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+        
+        .info-box p {
+            color: #1565c0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+            font-size: 15px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .result-box {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .result-box.show {
+            display: block;
+        }
+        
+        .result-header {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .result-item {
+            display: flex;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+        }
+        
+        .result-label {
+            font-weight: 600;
+            color: #666;
+            min-width: 100px;
+            margin-right: 15px;
+        }
+        
+        .result-value {
+            color: #333;
+            flex: 1;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .status-접수완료 {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .status-확인중 {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .status-답변완료 {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .status-보류 {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+        
+        .answer-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 8px;
+            border: 1px solid #a5d6a7;
+        }
+        
+        .answer-header {
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+        
+        .answer-content {
+            color: #1b5e20;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+        
+        .error-message {
+            display: none;
+            padding: 15px;
+            background: #ffebee;
+            color: #c62828;
+            border-radius: 6px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .back-link:hover {
+            background: #f5f5f5;
+            transform: translateY(-2px);
+        }
+        
+        .example {
+            color: #999;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 상담 상태 확인</h1>
+        
+        <div class="check-card">
+            <div class="info-box">
+                <p>📌 상담 신청 시 받으신 접수번호를 입력해주세요.</p>
+            </div>
+            
+            <form id="checkForm">
+                <div class="form-group">
+                    <label for="formId">접수번호 입력</label>
+                    <input type="text" 
+                           id="formId" 
+                           name="formId" 
+                           placeholder="예: 20241215-123" 
+                           required>
+                    <p class="example">형식: YYYYMMDD-숫자</p>
+                </div>
+                
+                <button type="submit" id="checkBtn">상태 확인하기</button>
+            </form>
+            
+            <div class="loading" id="loadingDiv">
+                <div class="spinner"></div>
+                <p>조회 중입니다...</p>
+            </div>
+            
+            <div class="error-message" id="errorMessage">
+                ❌ 해당 접수번호를 찾을 수 없습니다.<br>
+                접수번호를 다시 확인해주세요.
+            </div>
+            
+            <div class="result-box" id="resultBox">
+                <div class="result-header">📋 상담 신청 정보</div>
+                
+                <div class="result-item">
+                    <span class="result-label">접수번호</span>
+                    <span class="result-value" id="resultFormId"></span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">접수일시</span>
+                    <span class="result-value" id="resultDate"></span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">학생이름</span>
+                    <span class="result-value" id="resultStudent"></span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">상담주제</span>
+                    <span class="result-value" id="resultTopic"></span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">처리상태</span>
+                    <span class="result-value" id="resultStatus"></span>
+                </div>
+                
+                <div class="result-item">
+                    <span class="result-label">상담방법</span>
+                    <span class="result-value" id="resultType"></span>
+                </div>
+                
+                <div class="answer-box" id="answerBox" style="display: none;">
+                    <div class="answer-header">📝 선생님 답변</div>
+                    <div class="answer-content" id="answerContent"></div>
+                    <div style="margin-top: 10px; color: #666; font-size: 14px;">
+                        답변일시: <span id="answerDate"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="index.html" class="back-link">← 상담 신청하기</a>
+        </div>
+    </div>
+    
+    <script>
+        // ⚠️ 중요: 아래 URL을 실제 Google Apps Script URL로 변경하세요!
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwYzQbebs--jBUzrDDfB35Q7XbBc8QSXJMZ1gi3HqR5RXQZnELF6QaMYF9sgRVVopUJfA/exec력';
+        
+        document.getElementById('checkForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formId = document.getElementById('formId').value.trim();
+            const checkBtn = document.getElementById('checkBtn');
+            const loadingDiv = document.getElementById('loadingDiv');
+            const errorMessage = document.getElementById('errorMessage');
+            const resultBox = document.getElementById('resultBox');
+            
+            // 초기화
+            errorMessage.classList.remove('show');
+            resultBox.classList.remove('show');
+            
+            // 로딩 표시
+            checkBtn.disabled = true;
+            loadingDiv.classList.add('active');
+            
+            try {
+                // Google Apps Script로 조회 요청
+                const response = await fetch(GOOGLE_SCRIPT_URL + '?action=check&formId=' + encodeURIComponent(formId));
+                const data = await response.json();
+                
+                // 로딩 숨기기
+                loadingDiv.classList.remove('active');
+                checkBtn.disabled = false;
+                
+                if (data.result === 'success' && data.data) {
+                    // 결과 표시
+                    displayResult(data.data);
+                    resultBox.classList.add('show');
+                } else {
+                    // 에러 표시
+                    errorMessage.classList.add('show');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                loadingDiv.classList.remove('active');
+                checkBtn.disabled = false;
+                errorMessage.classList.add('show');
+            }
+        });
+        
+        function displayResult(data) {
+            // 기본 정보 표시
+            document.getElementById('resultFormId').textContent = data.formId;
+            document.getElementById('resultDate').textContent = data.createdAt;
+            document.getElementById('resultStudent').textContent = data.studentName;
+            document.getElementById('resultTopic').textContent = data.topic;
+            document.getElementById('resultType').textContent = data.consultType;
+            
+            // 상태 뱃지 표시
+            const statusElement = document.getElementById('resultStatus');
+            const status = data.status || '접수완료';
+            statusElement.innerHTML = `<span class="status-badge status-${status}">${status}</span>`;
+            
+            // 답변이 있는 경우 표시
+            if (data.answer && data.answer.trim() !== '') {
+                document.getElementById('answerBox').style.display = 'block';
+                document.getElementById('answerContent').textContent = data.answer;
+                document.getElementById('answerDate').textContent = data.answerDate || '';
+            } else {
+                document.getElementById('answerBox').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
