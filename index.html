@@ -14,8 +14,7 @@
         <div class="form-card">
             <!-- 안내 메시지 -->
             <div class="info-box">
-                <p>📌 상담 신청 후 2일 이내에 확인 및 답변 드리겠습니다.<br>
-                긴급한 사항은 010-XXXX-XXXX로 직접 연락 부탁드립니다.</p>
+                <p>📌 상담 신청 후 24시간 이내에 확인 및 답변 드리겠습니다.</p>
             </div>
             
             <!-- 상담 신청 폼 -->
@@ -33,7 +32,7 @@
                     
                     <div class="form-group">
                         <label for="studentNumber">학생 번호</label>
-                        <input type="number" id="studentNumber" name="studentNumber" min="1" max="35" placeholder="15">
+                        <input type="number" id="studentNumber" name="studentNumber" min="1" max="100" placeholder="15">
                     </div>
                 </div>
                 
@@ -112,7 +111,7 @@
                 <div class="form-group checkbox-group">
                     <label>
                         <input type="checkbox" id="privacy" required>
-                        개인정보 수집 및 이용에 동의합니다
+                        개인정보 수집 및 이용에 동의합니다.
                     </label>
                 </div>
                 
@@ -129,14 +128,16 @@
                 <div class="success-message" id="successMessage">
                     ✅ 상담 신청이 완료되었습니다!<br>
                     <span id="confirmNumber"></span><br>
-                    2일 이내에 확인 후 답변 드리겠습니다.
+                    24시간 이내에 확인 후 답변 드리겠습니다.
                 </div>
             </form>
             
-            <!-- 안내 메시지 -->
+            
+               <!-- 안내 메시지 -->
             <div class="note">
                 💡 제출 후 상담 접수번호가 발급됩니다.<br>
-                접수번호를 메모해두시면 처리 상태를 확인하실 수 있습니다.
+                접수번호를 메모해두시면 처리 상태를 확인하실 수 있습니다.<br><br>
+                <a href="check.html" style="color: #667eea; font-weight: bold;">📋 상담 상태 확인하기</a>
             </div>
         </div>
     </div>
@@ -145,3 +146,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+    
