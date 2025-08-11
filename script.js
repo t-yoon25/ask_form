@@ -1,5 +1,5 @@
 // ⚠️ 중요: 아래 URL을 실제 Google Apps Script URL로 변경하세요!
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxhsnSjHUK4GODCfNwcm3QU3gnMNydBHFxCY1iBgs1m0f2XdEjIeXYn8eOXrW_1RWbT/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzm9K2OlUYTKa6gDHcxtQzFMY0L8OhQCWlFo7hcht0WdUFh7YhMmaHG7a_vbzsZ915jig/exec';
 
 // 페이지가 로드되면 실행
 document.addEventListener('DOMContentLoaded', function() {
