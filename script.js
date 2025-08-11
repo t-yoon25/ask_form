@@ -1,5 +1,5 @@
 // ⚠️ 중요: 아래 URL을 실제 Google Apps Script URL로 변경하세요!
-const GOOGLE_SCRIPT_URL = '여기에_구글_앱스_스크립트_URL_입력';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx3HyZSbscnaN7suPYZaplt_N5AZyiof7JTZJkYvzT-Y7OUrGT6teixE7sHkOhDJchLhA/exec';
 
 // 페이지가 로드되면 실행
 document.addEventListener('DOMContentLoaded', function() {
@@ -177,4 +177,5 @@ function handleError(error) {
     // 버튼 다시 활성화
     submitBtn.disabled = false;
     loadingDiv.classList.remove('active');
+
 }
