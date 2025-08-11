@@ -1,5 +1,5 @@
 // ⚠️ 중요: 아래 URL을 실제 Google Apps Script URL로 변경하세요!
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwYzQbebs--jBUzrDDfB35Q7XbBc8QSXJMZ1gi3HqR5RXQZnELF6QaMYF9sgRVVopUJfA/exec';
+const GOOGLE_SCRIPT_URL = '여기에_구글_앱스_스크립트_URL_입력';
 
 // 페이지가 로드되면 실행
 document.addEventListener('DOMContentLoaded', function() {
@@ -88,14 +88,17 @@ function setupFormSubmit() {
             // 폼 데이터 수집
             const formData = collectFormData();
             
+            // FormData 객체로 변환 (URL 인코딩 방식)
+            const postData = new FormData();
+            for (const key in formData) {
+                postData.append(key, formData[key]);
+            }
+            
             // Google Apps Script로 데이터 전송
             const response = await fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
+                body: postData
             });
             
             // 성공 처리
