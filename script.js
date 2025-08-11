@@ -1,5 +1,5 @@
 // ⚠️ 중요: 아래 URL을 실제 Google Apps Script URL로 변경하세요!
-const GOOGLE_SCRIPT_URL = '여기에_구글_앱스_스크립트_URL_입력';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxhsnSjHUK4GODCfNwcm3QU3gnMNydBHFxCY1iBgs1m0f2XdEjIeXYn8eOXrW_1RWbT/exec';
 
 // 페이지가 로드되면 실행
 document.addEventListener('DOMContentLoaded', function() {
@@ -165,7 +165,7 @@ function handleSuccess(formId) {
             <strong style="color: #856404; font-size: 18px;">접수번호: ${formId}</strong><br>
             <span style="color: #856404; font-size: 14px;">이 번호를 꼭 메모해주세요!</span>
         </div>
-        2일 이내에 확인 후 답변 드리겠습니다.
+        24시간 이내에 확인 후 답변 드리겠습니다.
     `;
     successMessage.style.display = 'block';
     
