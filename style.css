@@ -208,3 +208,24 @@ button:disabled {
     font-size: 16px;
     line-height: 1.6;
 }
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+}
+
+.status-접수완료 {
+    background: #dc3545;  /* 빨간색 */
+}
+
+.status-확인완료 {
+    background: #28a745;  /* 초록색 */
+}
+
+.status-답변완료 {
+    background: #007bff;  /* 파란색 */
+}
