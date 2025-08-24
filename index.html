@@ -143,9 +143,24 @@
     </div>
     
     <!-- JavaScript 파일 연결 -->
-    <script src="script.js"></script>
+    <script src="script.js">
+        // script.js 맨 위에 추가
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('edit') === 'true') {
+                const editData = JSON.parse(sessionStorage.getItem('editData'));
+                if (editData) {
+                    document.getElementById('formId').value = editData.formId;
+                    // 기존 데이터 불러와서 폼에 채우기
+                    alert('기존 상담 내용을 수정하실 수 있습니다.');
+                }
+            }
+        };
+        
+    </script>
 </body>
 </html>
     
+
 
 
