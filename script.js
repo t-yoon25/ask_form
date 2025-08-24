@@ -74,6 +74,25 @@ function setupFormSubmit() {
     form.addEventListener('submit', async function(e) {
         // 기본 제출 동작 막기
         e.preventDefault();
+
+        // 입력 내용 확인
+        const confirmMessage = `
+        📋 입력하신 내용을 확인해주세요
+        
+        학생: ${document.getElementById('studentName').value} (${document.getElementById('studentNumber').value}번)
+        보호자: ${document.getElementById('guardianName').value}
+        연락처: ${document.getElementById('phone').value}
+        상담주제: ${document.getElementById('topic').value}
+        우선순위: ${document.getElementById('priority').value}
+        
+        상담내용:
+        ${document.getElementById('message').value}
+        
+        이대로 제출하시겠습니까?`;
+        
+        if (!confirm(confirmMessage)) {
+            return; // 취소 시 제출 중단
+        }
         
         // 전화번호 검증
         if (!validatePhone()) {
@@ -194,3 +213,4 @@ function handleError(error) {
     submitBtn.disabled = false;
     loadingDiv.classList.remove('active');
 }
+
