@@ -356,74 +356,86 @@
         // ⚠️ 중요: 아래 URL을 실제 Google Apps Script URL로 변경하세요!
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzm9K2OlUYTKa6gDHcxtQzFMY0L8OhQCWlFo7hcht0WdUFh7YhMmaHG7a_vbzsZ915jig/exec';
         
-        document.getElementById('checkForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formId = document.getElementById('formId').value.trim();
-            const checkBtn = document.getElementById('checkBtn');
-            const loadingDiv = document.getElementById('loadingDiv');
-            const errorMessage = document.getElementById('errorMessage');
-            const resultBox = document.getElementById('resultBox');
-            
-            // 초기화
-            errorMessage.classList.remove('show');
-            resultBox.classList.remove('show');
-            
-            // 로딩 표시
-            checkBtn.disabled = true;
-            loadingDiv.classList.add('active');
-            
-            try {
-                // Google Apps Script로 조회 요청
-                const response = await fetch(GOOGLE_SCRIPT_URL + '?action=check&formId=' + encodeURIComponent(formId));
-                const data = await response.json();
-                
-                // 로딩 숨기기
-                loadingDiv.classList.remove('active');
-                checkBtn.disabled = false;
-                
-                if (data.result === 'success' && data.data) {
-                    // 결과 표시
-                    displayResult(data.data);
-                    resultBox.classList.add('show');
-                } else {
-                    // 에러 표시
-                    errorMessage.classList.add('show');
-                }
-                
-            } catch (error) {
-                console.error('Error:', error);
-                loadingDiv.classList.remove('active');
-                checkBtn.disabled = false;
-                errorMessage.classList.add('show');
-            }
-        });
+      document.getElementById('checkForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formId = document.getElementById('formId').value.trim();
+    const checkBtn = document.getElementById('checkBtn');
+    const loadingDiv = document.getElementById('loadingDiv');
+    const errorMessage = document.getElementById('errorMessage');
+    const resultBox = document.getElementById('resultBox');
+    
+    // 초기화
+    errorMessage.classList.remove('show');
+    resultBox.classList.remove('show');
+    
+    // 로딩 표시
+    checkBtn.disabled = true;
+    loadingDiv.classList.add('active');
+    
+    try {
+        // Google Apps Script로 조회 요청
+        const response = await fetch(GOOGLE_SCRIPT_URL + '?action=check&formId=' + encodeURIComponent(formId));
+        const data = await response.json();
         
-        function displayResult(data) {
-            // 기본 정보 표시
-            document.getElementById('resultFormId').textContent = data.formId;
-            document.getElementById('resultDate').textContent = data.createdAt;
-            document.getElementById('resultStudent').textContent = data.studentName;
-            document.getElementById('resultTopic').textContent = data.topic;
-            document.getElementById('resultType').textContent = data.consultType;
-            
-            // 상태 뱃지 표시
-            const statusElement = document.getElementById('resultStatus');
-            const status = data.status || '접수 완료';
-            statusElement.innerHTML = `<span class="status-badge status-${status}">${status}</span>`;
-            
-            // 답변이 있는 경우 표시
-            if (data.answer && data.answer.trim() !== '') {
-                document.getElementById('answerBox').style.display = 'block';
-                document.getElementById('answerContent').textContent = data.answer;
-                document.getElementById('answerDate').textContent = data.answerDate || '';
-            } else {
-                document.getElementById('answerBox').style.display = 'none';
-            }
+        // 로딩 숨기기
+        loadingDiv.classList.remove('active');
+        checkBtn.disabled = false;
+        
+        if (data.result === 'success' && data.data) {
+            // 결과 표시
+            displayResult(data.data);
+            resultBox.classList.add('show');
+        } else {
+            // 에러 표시
+            errorMessage.classList.add('show');
         }
+        
+    } catch (error) {
+        console.error('Error:', error);
+        loadingDiv.classList.remove('active');
+        checkBtn.disabled = false;
+        errorMessage.classList.add('show');
+    }
+});
+
+function displayResult(data) {
+    // 기본 정보 표시
+    document.getElementById('resultFormId').textContent = data.formId;
+    document.getElementById('resultDate').textContent = data.createdAt;
+    document.getElementById('resultStudent').textContent = data.studentName;
+    document.getElementById('resultTopic').textContent = data.topic;
+    document.getElementById('resultType').textContent = data.consultType;
+    
+    // ⭐ 상태 뱃지 표시 (수정된 부분)
+    const statusElement = document.getElementById('resultStatus');
+    const status = data.status || '접수완료';
+    
+    // 공백 제거하고 클래스명 만들기
+    let statusClass = '';
+    if (status === '접수완료' || status === '접수 완료') {
+        statusClass = 'status-접수완료';
+    } else if (status === '확인완료' || status === '확인 완료') {
+        statusClass = 'status-확인완료';
+    } else if (status === '답변완료' || status === '답변 완료') {
+        statusClass = 'status-답변완료';
+    }
+    
+    statusElement.innerHTML = '<span class="status-badge ' + statusClass + '">' + status + '</span>';
+    
+    // 답변이 있는 경우 표시
+    if (data.answer && data.answer.trim() !== '') {
+        document.getElementById('answerBox').style.display = 'block';
+        document.getElementById('answerContent').textContent = data.answer;
+        document.getElementById('answerDate').textContent = data.answerDate || '';
+    } else {
+        document.getElementById('answerBox').style.display = 'none';
+    }
+}
     </script>
 </body>
 </html>
+
 
 
 
