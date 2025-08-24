@@ -135,6 +135,23 @@
             background: #f8f9fa;
             border-radius: 8px;
             border: 1px solid #dee2e6;
+
+            <button onclick="editConsultation()" style="background: #ff9800; margin-top: 15px;">
+                ✏️ 수정하기
+            </button>
+            
+            <script>
+            function editConsultation() {
+                // 현재 데이터를 localStorage에 저장
+                const editData = {
+                    formId: document.getElementById('resultFormId').textContent,
+                    // 다른 필드들도 추가
+                };
+                sessionStorage.setItem('editData', JSON.stringify(editData));
+                window.location.href = 'index.html?edit=true';
+            }
+            </script>
+            
         }
         
         .result-box.show {
@@ -407,3 +424,4 @@
     </script>
 </body>
 </html>
+
